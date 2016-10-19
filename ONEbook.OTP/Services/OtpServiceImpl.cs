@@ -32,7 +32,7 @@
                 userName = randomHelper.GenerateUsername();
             }
 
-            var otpUrl = otpAdapter.GenerateTotpUrl(secretKey, userName, timePeriod, OtpHashMode.Sha1, otpSize);
+            var otpUrl = otpAdapter.GenerateTotpUrl(secretKey, userName, issuer, timePeriod, OtpHashMode.Sha1, otpSize);
             var qrCode = qrCodeAdatper.Generate(otpUrl);
 
             return qrCode;

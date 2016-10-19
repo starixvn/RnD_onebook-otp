@@ -53,7 +53,7 @@
             otpService.GenerateQrCode(secretKey, userName, issuer, timePeriod, otpSize);
 
             // Assert
-            otpAdapter.Received().GenerateTotpUrl(secretKey, userName, timePeriod, OtpHashMode.Sha1, otpSize);
+            otpAdapter.Received().GenerateTotpUrl(secretKey, userName, issuer, timePeriod, OtpHashMode.Sha1, otpSize);
         }
 
         [TestCase(null)]
@@ -76,6 +76,7 @@
             otpAdapter.GenerateTotpUrl(
                 Arg.Any<string>(),
                 Arg.Any<string>(),
+                Arg.Any<string>(),
                 Arg.Any<int>(),
                 Arg.Any<OtpHashMode>(),
                 Arg.Any<int>()).Returns(expectedOtpUrl);
@@ -94,6 +95,7 @@
             var expectedQrCode = "expectedQrCode";
             var returnOtpUrl = "returnOtpUrl";
             otpAdapter.GenerateTotpUrl(
+                Arg.Any<string>(),
                 Arg.Any<string>(),
                 Arg.Any<string>(),
                 Arg.Any<int>(),
