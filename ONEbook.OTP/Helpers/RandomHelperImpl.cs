@@ -8,7 +8,7 @@
     {
         public string GenerateSecretKey(int length = 16)
         {
-            byte[] secretKey = KeyGeneration.GenerateRandomKey(length);
+            var secretKey = KeyGeneration.GenerateRandomKey(length);
 
             return Base32Encoder.Encode(secretKey);
         }

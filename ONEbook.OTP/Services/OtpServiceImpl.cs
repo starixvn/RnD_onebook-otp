@@ -20,7 +20,7 @@
             this.randomHelper = randomHelper ?? new RandomHelperImpl();
         }
 
-        public string GenerateQrCode(string secretKey, string userName = null, string issuer = "Application Name", int timePeriod = 30, int otpSize = 6)
+        public string GenerateQrCode(string secretKey, int timePeriod = 30, int otpSize = 6, string issuer = "Application Name", string userName = null)
         {
             if(string.IsNullOrWhiteSpace(secretKey))
             {

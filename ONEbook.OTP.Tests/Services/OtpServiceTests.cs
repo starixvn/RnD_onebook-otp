@@ -50,7 +50,7 @@
             var otpSize = 6;
 
             // Act
-            otpService.GenerateQrCode(secretKey, userName, issuer, timePeriod, otpSize);
+            otpService.GenerateQrCode(secretKey, timePeriod, otpSize, issuer, userName);
 
             // Assert
             otpAdapter.Received().GenerateTotpUrl(secretKey, userName, issuer, timePeriod, OtpHashMode.Sha1, otpSize);
@@ -62,7 +62,7 @@
         public void GenerateQrCode_UsernameIsNullOrWhiteSpace_ExecuteGenerateRandomUsername(string username)
         {
             // Act
-            otpService.GenerateQrCode("secretKey", username);
+            otpService.GenerateQrCode("secretKey", 30, 6, "Issuer", username);
 
             // Assert
             randomHelper.Received().GenerateUsername();
