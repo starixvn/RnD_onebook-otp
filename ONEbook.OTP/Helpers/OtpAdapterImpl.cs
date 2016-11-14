@@ -30,7 +30,7 @@
             var totp = new Totp(decodedSecretKey, timePeriod, mode, totpSize);
             long timeStepMatched = 0;
 
-            return totp.VerifyTotp(otp, out timeStepMatched, new VerificationWindow(2, 2));
+            return totp.VerifyTotp(otp, out timeStepMatched, new VerificationWindow(1, 1));
         }
     }
 }
