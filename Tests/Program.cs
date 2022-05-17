@@ -9,6 +9,19 @@ namespace Tests
         {
             Console.WriteLine("Hello World!");
 
+            GenerateQr();
+
+        }
+
+        static void GenerateQr()
+        {
+            var otpService = new OtpServiceImpl();
+            const string key = "T3JYLVIHX2WUZL45P3KLI4J2IY======";
+            var img = otpService.GenerateQrCode(key, 30, 6, "NewOTPApp", "jacobphan");
+        }
+
+        static void TestOtp()
+        {
             var otpService = new OtpServiceImpl();
             const string key = "T3JYLVIHX2WUZL45P3KLI4J2IY======";
             while (true)
@@ -26,7 +39,6 @@ namespace Tests
 
                 Console.WriteLine("Correct:" + otpResult);
             }
-
         }
     }
 }
