@@ -2,7 +2,7 @@
 {
     using System;
     using Helpers;
-    using OtpSharp;
+    using PureOtp.Types;
 
     public class OtpServiceImpl : OtpService
     {
@@ -11,7 +11,7 @@
         private readonly RandomHelper randomHelper;
 
         public OtpServiceImpl(
-            OtpAdapter otpAdapter = null, 
+            OtpAdapter otpAdapter = null,
             QrCodeAdapter qrCodeAdatper = null,
             RandomHelper randomHelper = null)
         {
@@ -22,12 +22,12 @@
 
         public string GenerateQrCode(string secretKey, int timePeriod = 30, int otpSize = 6, string issuer = "Application Name", string userName = null)
         {
-            if(string.IsNullOrWhiteSpace(secretKey))
+            if (string.IsNullOrWhiteSpace(secretKey))
             {
                 throw new ArgumentOutOfRangeException(nameof(secretKey), "Secret key cannot be null or white space");
             }
 
-            if(string.IsNullOrWhiteSpace(userName))
+            if (string.IsNullOrWhiteSpace(userName))
             {
                 userName = randomHelper.GenerateUsername();
             }
@@ -40,7 +40,7 @@
 
         public string GenerateSecretKey(int length = 16)
         {
-            if(length <= 0)
+            if (length <= 0)
             {
                 throw new ArgumentOutOfRangeException(nameof(length), "Length cannot be negative or zero");
             }
