@@ -1,27 +1,26 @@
-﻿namespace ONEbook.OTP.Helpers
+﻿namespace ONEbook.OTP.Helpers;
+
+using System;
+using OtpNet;
+
+public interface RandomHelper
 {
-    using System;
-    using PureOtp;
+    string GenerateUsername(int length = 10);
 
-    public interface RandomHelper
+    string GenerateSecretKey(int length = 16);
+}
+
+public class RandomHelperImpl : RandomHelper
+{
+    public string GenerateSecretKey(int length = 16)
     {
-        string GenerateUsername(int length = 10);
+        var secretKey = KeyGeneration.GenerateRandomKey(length);
 
-        string GenerateSecretKey(int length = 16);
+        return Base32Encoder.Encode(secretKey);
     }
 
-    public class RandomHelperImpl : RandomHelper
+    public string GenerateUsername(int length = 16)
     {
-        public string GenerateSecretKey(int length = 16)
-        {
-            var secretKey = KeyGeneration.GenerateRandomKey(length);
-
-            return Base32Encoder.Encode(secretKey);
-        }
-
-        public string GenerateUsername(int length = 16)
-        {
-            return Guid.NewGuid().ToString().Replace("-", string.Empty).Substring(0, length);
-        }
+        return Guid.NewGuid().ToString().Replace("-", string.Empty).Substring(0, length);
     }
 }

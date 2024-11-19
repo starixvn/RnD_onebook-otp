@@ -1,44 +1,47 @@
 ﻿using System;
-using ONEbook.OTP.Services;
 
-namespace Tests
+namespace Tests;
+
+using ONEbook.OTP;
+
+internal class Program
 {
-    class Program
+    private static void Main()
     {
-        static void Main(string[] args)
+        Console.WriteLine("Hello World!");
+
+        GenerateQr();
+
+        TestOtp();
+    }
+
+    private static void GenerateQr()
+    {
+        var otpService = new OtpServiceImp();
+        const string key = "T3JYLVIHX2WUZL45P3KLI4J2IY======";
+        var img = otpService.GenerateQrCode(key, 30, 6, "NewOTPApp", "jacobphan");
+            
+        Console.WriteLine(img);
+    }
+
+    private static void TestOtp()
+    {
+        var otpService = new OtpServiceImp();
+        const string key = "T3JYLVIHX2WUZL45P3KLI4J2IY======";
+        while (true)
         {
-            Console.WriteLine("Hello World!");
+            Console.WriteLine("Enter the key:");
 
-            GenerateQr();
+            var otp = Console.ReadLine();
 
-        }
-
-        static void GenerateQr()
-        {
-            var otpService = new OtpServiceImpl();
-            const string key = "T3JYLVIHX2WUZL45P3KLI4J2IY======";
-            var img = otpService.GenerateQrCode(key, 30, 6, "NewOTPApp", "jacobphan");
-        }
-
-        static void TestOtp()
-        {
-            var otpService = new OtpServiceImpl();
-            const string key = "T3JYLVIHX2WUZL45P3KLI4J2IY======";
-            while (true)
+            if (string.IsNullOrEmpty(otp))
             {
-                Console.WriteLine("Enter the key:");
-
-                var otp = Console.ReadLine();
-
-                if (string.IsNullOrEmpty(otp))
-                {
-                    break;
-                }
-
-                var otpResult = otpService.VerifyOtp(key, otp);
-
-                Console.WriteLine("Correct:" + otpResult);
+                break;
             }
+
+            var otpResult = otpService.VerifyOtp(key, otp);
+
+            Console.WriteLine("Correct:" + otpResult);
         }
     }
 }

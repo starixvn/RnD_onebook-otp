@@ -1,37 +1,33 @@
-﻿namespace ONEbook.OTP.Helpers
+﻿namespace ONEbook.OTP.Helpers;
+
+using System;
+using System.IO;
+using SkiaSharp;
+using SkiaSharp.QrCode;
+
+public interface QrCodeAdapter
 {
-    using System;
-    using System.Drawing;
-    using System.Drawing.Imaging;
-    using System.IO;
-    using QRCoder;
+    string Generate(string otpUrl);
+}
 
-    public interface QrCodeAdapter
+public class QrCodeAdapterImpl : QrCodeAdapter
+{
+    public string Generate(string otpUrl)
     {
-        string Generate(string otpUrl);
-    }
+        using var qrGenerator = new QRCodeGenerator();
+        using var qrCodeData = qrGenerator.CreateQrCode(otpUrl, ECCLevel.Q);
 
-    public class QrCodeAdapterImpl : QrCodeAdapter
-    {
-        public string Generate(string otpUrl)
-        {
-            using (var qrGenerator = new QRCodeGenerator())
-            {
-                using (var qrCodeData = qrGenerator.CreateQrCode(otpUrl, QRCodeGenerator.ECCLevel.Q))
-                {
-                    using (var qrCode = new QRCode(qrCodeData))
-                    {
-                        using (var qrCodeImage = qrCode.GetGraphic(4, Color.Black, Color.White,true))
-                        {
-                            using (var memoryStream = new MemoryStream())
-                            {
-                                qrCodeImage.Save(memoryStream, ImageFormat.Jpeg);
-                                return $"data:image/jpeg;base64,{Convert.ToBase64String(memoryStream.ToArray())}";
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        var info = new SKImageInfo(212, 212);
+        using var surface = SKSurface.Create(info);
+        var canvas = surface.Canvas;
+        canvas.Render(qrCodeData, info.Width, info.Height);
+
+        using var image = surface.Snapshot();
+        using var data = image.Encode(SKEncodedImageFormat.Jpeg, 100);
+
+        using var memoryStream = new MemoryStream();
+        data.SaveTo(memoryStream);
+
+        return $"data:image/jpeg;base64,{Convert.ToBase64String(memoryStream.ToArray())}";
     }
 }
